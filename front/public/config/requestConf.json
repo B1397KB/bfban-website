@@ -6,12 +6,12 @@
   "child": {
     "development": {
       "protocol": "http",
-      "host": "localhost:3000",
+      "host": "bfbanapi.b1397kb.com",
       "pathname": "/api/"
     },
     "upload": {
       "protocol": "https",
-      "host": "bfban.gametools.network",
+      "host": "bfbanapi.b1397kb.com",
       "pathname": "/api/"
     },
     "production": {
@@ -21,7 +21,7 @@
     },
     "staging": {
       "protocol": "https",
-      "host": "ban.linrunrun.online",
+      "host": "bfbanapi.b1397kb.com",
       "pathname": "/api/"
     }
   }

@@ -16,7 +16,7 @@
     },
     "production": {
       "protocol": "https",
-      "host": "bfban.gametools.network",
+      "host": "bfbanapi.b1397kb.com",
       "pathname": "/api/"
     },
     "staging": {

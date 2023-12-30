@@ -6,7 +6,7 @@
   "child": {
     "development": {
       "protocol": "http",
-      "host": "bfbanapi.b1397kb.com",
+      "host": "localhost:3000",
       "pathname": "/api/"
     },
     "upload": {

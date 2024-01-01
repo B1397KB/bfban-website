@@ -15,6 +15,9 @@
         <br>
       </template>
 
+      <AdsGoogle id="7930151828"></AdsGoogle>
+      <br>
+
       <Card id="getSharePicture" v-if="isCheaterExist" dis-hover>
         <Row :gutter="10">
           <Col :xs="{span: 22, pull: 1, push: 1}" :lg="{span: 3, pull: 0, push: 0}">
@@ -906,9 +909,12 @@
               <!-- 用户回复 E -->
             </Col>
 
-            <!-- 申诉按钮 -->
             <Col :xs="{span: 23, push: 0}" :lg="{span: 7, push: 0}" order="2" class="mobile-hide"
                  v-if="appeal.disable">
+              <AdsGoogle id="1760339032"></AdsGoogle>
+              <br>
+
+              <!-- 申诉按钮 -->
               <Card dis-hover>
                 <h1 style="text-align: center">📥</h1>
                 <p>{{ $t('detail.info.appealManual1') }}</p>
@@ -1092,6 +1098,9 @@
       </template>
     </div>
 
+    <br>
+    <AdsGoogle id="7930151828"></AdsGoogle>
+
     <template v-if="!isFull">
       <Affix :top="100">
         <Card dis-hover class="detail-affix mobile-hide">
@@ -1204,6 +1213,7 @@
 import {api, http, http_token, util, message, time, storage, account_storage, mail, regular} from '../assets/js/index'
 
 import Application from "/src/assets/js/application";
+import AdsGoogle from "../components/ads/google/index.vue";
 import Empty from '../components/Empty.vue'
 import Textarea from "../components/Textarea";
 import BusinessCard from "../components/BusinessCard.vue";
@@ -1318,6 +1328,7 @@ export default new Application({
     }
   },
   components: {
+    AdsGoogle,
     Empty,
     Textarea,
     BusinessCard,

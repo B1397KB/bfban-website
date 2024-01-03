@@ -376,7 +376,7 @@ export default new Application({
 
       let selectTime = this.timeArray.filter(i => i.value == this.timeRange)[0].value;
 
-      http.get('/activeStatistical', {
+      http.get(api['activeStatistical'], {
         params: {
           isBot: this.isIncludingRobots,
           time: selectTime,
@@ -404,6 +404,7 @@ export default new Application({
      * 获取话题排行
      */
     getTrend () {
+      if (!this.isLogin) return;
       this.trend.load = true;
 
       http.get(api['trend'], {

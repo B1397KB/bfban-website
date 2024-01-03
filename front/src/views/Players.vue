@@ -126,7 +126,7 @@
                       <div>
                         {{ $t('list.colums.reportTime') }}
                         <TimeView :time="d.createTime">
-                          <Time v-if="d.createTime" :time="d.createTime"/>
+                          <Time v-if="d.createTime" :time="d.createTime" type="datetime"/>
                         </TimeView>
                         <Divider type="vertical"/>
                         {{ $t('list.colums.updateTime') }}
@@ -160,8 +160,6 @@
               <Empty></Empty>
             </Card>
 
-            <AdsGoogle id="7930151828" style="margin-bottom: 8px;"></AdsGoogle>
-
             <Page class="page"
                   size="small"
                   show-sizer
@@ -173,6 +171,8 @@
                   @on-change="handlePageChange"
                   @on-page-size-change="handlePageSizeChange"/>
           </Card>
+
+          <AdsGoogle id="6674125493" style="margin: 10px 0;"></AdsGoogle>
         </Col>
         <Col :xs="{span: 22, push: 1, pull: 1}" :lg="{span: 7, push: 0, pull: 0}">
           <br>

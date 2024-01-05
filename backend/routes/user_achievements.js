@@ -1,14 +1,15 @@
+"use strict";
+import express from "express";
+import db from "../mysql.js";
+import config from "../config.js";
+import fetch from 'node-fetch';
+import logger from "../logger.js";
+
 import {allowPrivileges, forbidPrivileges, verifyJWT} from "../middleware/auth.js";
 import {body as checkbody, query as checkquery} from "express-validator/src/middlewares/validation-chain-builders.js";
 import {validationResult} from "express-validator";
-import db from "../mysql.js";
-import express from "express";
 import {userSetAttributes} from "../lib/user.js";
 import {getGravatarAvatar} from "../lib/gravatar.js";
-import config from "../config.js";
-import fetch from 'node-fetch';
-import {re} from "@babel/core/lib/vendor/import-meta-resolve.js";
-import logger from "../logger.js";
 
 const router = express.Router();
 const achievementConfig = {
@@ -278,6 +279,21 @@ const achievementConfig = {
     }
 }
 
+/**
+ * @swagger
+ * /api/user/achievements:
+ *  get:
+ *     tags:
+ *       - user
+ *       - achievement
+ *     summary: user Achievement list
+ *     description: Get a list of current account achievements
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: achievements.success
+ */
 router.get('/achievements', verifyJWT, forbidPrivileges(['freezed', 'blacklisted']), async (req, res, next) => {
     try {
         const validateErr = validationResult(req);
@@ -295,7 +311,7 @@ router.get('/achievements', verifyJWT, forbidPrivileges(['freezed', 'blacklisted
             userAvatar: user.originEmail ? getGravatarAvatar(user.originEmail) : null,
             userAachievementExp: totalAachievementExp(user),
             isPublicAchievement: user.attr.showAchievement,
-            achievements: user.attr.achievements || {}
+            achievements: handleAchievemenMapToArray(user.attr.achievements)
         };
 
         return res.status(200).json({success: 1, code: 'achievement.success', data: result});
@@ -304,6 +320,27 @@ router.get('/achievements', verifyJWT, forbidPrivileges(['freezed', 'blacklisted
     }
 });
 
+/**
+ * @swagger
+ * /api/user/achievement:
+ *   post:
+ *     tags:
+ *       - user
+ *       - achievement
+ *     summary: Get achievement
+ *     description: Get achievements and check for eligibility
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: achievement key
+ *         description: id
+ *         required: true
+ *         type: string
+ *         value: old_user
+ *     responses:
+ *       200:
+ *         description: achievement.success
+ */
 router.post('/achievement', verifyJWT, forbidPrivileges(['freezed', 'blacklisted']), [
     checkbody('id').isIn(Object.keys(achievementConfig)),
 ], async (req, res, next) => {
@@ -411,6 +448,13 @@ router.post('/achievement/admin/delete', verifyJWT, allowPrivileges(["super", "r
     }
 });
 
+function handleAchievemenMapToArray (achievements = {}) {
+    return Object.entries(achievementConfig).map(([key, value]) => {
+        if (achievements[key] && key && value)
+            return {name: key, acquisitionTime: new Date(achievements[key]), points: achievementConfig[key].points || 0};
+    }).filter(i => i != null);
+}
+
 function totalAachievementExp(user = {}) {
     let total = 0;
     let achievements = user.attr && Object.keys(user.attr.achievements) || [];
@@ -427,4 +471,5 @@ export {
     router,
     achievementConfig,
     totalAachievementExp,
+    handleAchievemenMapToArray,
 };

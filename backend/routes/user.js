@@ -473,7 +473,7 @@ async function showUserInfo(req, res, next) {
             id: user.id,
             userAvatar: user.originEmail ? getGravatarAvatar(user.originEmail) : null,
             username: user.username,
-            userAachievementExp: user.attr.showAchievement ? totalAachievementExp(req.user) : null,
+            userAchievementExp: user.attr.showAchievement ? totalAachievementExp(req.user) : null,
             privilege: user.privilege,
             joinTime: user.createTime,
             lastOnlineTime: user.updateTime,
@@ -490,7 +490,7 @@ async function showUserInfo(req, res, next) {
         };
         if (!user.attr.showAchievement) {
             delete data.attr.achievements;
-            delete data.userAachievementExp;
+            delete data.userAchievementExp;
         }
 
         return res.status(200).setHeader('Cache-Control', 'public, max-age=30').json({
@@ -566,7 +566,7 @@ async (req, res, next) => {
         if (req.body.data.subscribes)
             update.subscribes = JSON.stringify(req.body.data.subscribes.map(i => i - 0)); // to number
         if (req.body.data.attr)
-            update.attr = JSON.stringify(userSetAttributes(req.user.attr, req.body.data.attr, true));
+            update.attr = JSON.stringify(userSetAttributes(req.user.attr, req.body.data.attr));
 
         await db('users').update(update).where({id: req.user.id});
 
@@ -658,9 +658,10 @@ async (req, res, next) => {
         const validateErr = validationResult(req);
         if (!validateErr.isEmpty())
             return res.status(400).json({error: 1, code: 'forgetPassword.bad', message: validateErr.array()});
+        const {username} = req.body.data;
 
         /** @type {import("../typedef.js").User} */
-        const user = await db.select('*').from('users').where({username: req.body.data.username}).first();
+        const user = await db.select('*').from('users').where({username: username}).orWhere({originName: username}).first();
         if (userHasRoles(user, ['blacklisted']))
             return res.status(403).json({
                 error: 1,

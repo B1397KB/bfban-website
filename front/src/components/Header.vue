@@ -78,8 +78,8 @@
               </div>
               <PrivilegesTag :data="userinfo.privilege"></PrivilegesTag>
             </div>
-            <router-link :to="{name: 'account', params: { uId: `${userinfo.userId}` }}">
-              <DropdownItem divided :disabled="$route.name == 'account' && userinfo.userId == this.$route.params.uId">
+            <router-link :to="{name: 'space', params: { uId: `${userinfo.userId}` }}">
+              <DropdownItem divided :disabled="$route.name == 'space' && userinfo.userId == this.$route.params.uId">
                 {{ $t("header.userCenter") }}
               </DropdownItem>
             </router-link>
@@ -168,7 +168,6 @@
         </Tooltip>
       </div>
     </div>
-    <Lantern></Lantern>
   </header>
 </template>
 
@@ -183,7 +182,6 @@ import HistoryView from "@/components/HistoryView.vue";
 import HeaderMessage from "./HeaderMessage.vue";
 import PrivilegesTag from "/src/components/PrivilegesTag";
 import Application from "@/assets/js/application";
-import Lantern from "@/components/Lantern.vue";
 import Banner from "@/components/Banner.vue";
 
 export default new Application({
@@ -196,7 +194,7 @@ export default new Application({
       },
     }
   },
-  components: {HistoryView, Banner, HeaderMessage, UserAvatar, Lantern, PrivilegesTag},
+  components: {HistoryView, Banner, HeaderMessage, UserAvatar, PrivilegesTag},
   watch: {
     $route: "loadData",
   },
